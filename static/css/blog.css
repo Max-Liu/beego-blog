@@ -1,0 +1,34 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.form-blog {
+  max-width: 800px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-blog .form-blog-heading,
+.form-blog .checkbox {
+  margin-bottom: 10px;
+}
+.form-blog .checkbox {
+  font-weight: normal;
+}
+.form-blog .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  margin-bottom :20px;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.form-title{
+	max-width: 400px;
+}
+.form-blog .form-control:focus {
+  z-index: 2;
+}
