@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"github.com/garyburd/redigo/redis"
 	"time"
+	// "os"
+	// "fmt"
 )
 
 type Blog struct {
@@ -49,7 +51,33 @@ func (this *BlogController) Post() {
 		}
 	}
 }
+func (this *BlogController) Home(){
+	this.Layout = "layout.html"
+	this.TplNames = "home.html"
 
-func (this *BlogController) List() {
-	this.Ctx.WriteString("list")
+	if this.GetSession("login") == true{
+		c,err :=redis.Dial("tcp", ":6379")
+		if err!=nil{
+			spew.Dump(err)
+		}
+		postIndexList,_:=redis.Values(c.Do("LRANGE","post:list",0,10 ))
+
+		var post Blog
+		var postList []Blog
+
+		for _,v := range postIndexList{
+			r,_:=redis.Values(c.Do("HGETALL","post:"+string(v.([]uint8))))
+			redis.ScanStruct(r, &post)
+			postList = append(postList,post)
+		}
+		this.Data["blogList"] = postList
+
+		this.Render()
+	}else{
+		spew.Dump(this.GetSession("login"))
+		flash.Error("need login")
+		flash.Store(&this.Controller)
+		this.Redirect("/user/login", 302)
+	}
 }
+

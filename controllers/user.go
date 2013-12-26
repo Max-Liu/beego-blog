@@ -2,7 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
- 	spew "github.com/davecgh/go-spew/spew"
+ 	// spew "github.com/davecgh/go-spew/spew"
+ 	// "github.com/garyburd/redigo/redis"
 )
 
 type UserController struct {
@@ -18,7 +19,6 @@ type User struct {
 var flash = beego.NewFlash()
 
 func (this *UserController) Login_api() {
-	
 	user := User{}
 	if err := this.ParseForm(&user); err != nil {
 		beego.Info(err)
@@ -48,14 +48,4 @@ func (this *UserController) Logout() {
 	this.Redirect("/user/home", 302)
 }
 
-func (this *UserController) Home(){
-	this.TplNames = "home.html"
-	if this.GetSession("login") == true{
-		this.Render()
-	}else{
-		spew.Dump(this.GetSession("login"))
-		flash.Error("need login")
-		flash.Store(&this.Controller)
-		this.Redirect("/user/login", 302)
-	}
-}
+
