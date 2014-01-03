@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"github.com/garyburd/redigo/redis"
 	"time"
+	"log"
 	// "os"
 	// "fmt"
 )
@@ -47,7 +48,7 @@ func (this *BlogController) Post() {
 		if err != nil{
 			spew.Dump(err)
 		}else{
-			this.Redirect("/user/home", 302)
+			this.Redirect("/blog/home", 302)
 		}
 	}
 }
@@ -58,7 +59,7 @@ func (this *BlogController) Home(){
 	if this.GetSession("login") == true{
 		c,err :=redis.Dial("tcp", ":6379")
 		if err!=nil{
-			spew.Dump(err)
+			log.Println(err)
 		}
 		postIndexList,_:=redis.Values(c.Do("LRANGE","post:list",0,10 ))
 
@@ -70,11 +71,10 @@ func (this *BlogController) Home(){
 			redis.ScanStruct(r, &post)
 			postList = append(postList,post)
 		}
-		this.Data["blogList"] = postList
 
+		this.Data["blogList"] = postList
 		this.Render()
 	}else{
-		spew.Dump(this.GetSession("login"))
 		flash.Error("need login")
 		flash.Store(&this.Controller)
 		this.Redirect("/user/login", 302)

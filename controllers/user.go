@@ -25,7 +25,7 @@ func (this *UserController) Login_api() {
 	} else {
 		if user.Email == "forevervmax@gmail.com" {
 			this.SetSession("login", true)
-			this.Ctx.Redirect(302, "/user/home")
+			this.Ctx.Redirect(302, "/blog/home")
 		} else {
 			flash.Error("error password")
 			flash.Store(&this.Controller)
