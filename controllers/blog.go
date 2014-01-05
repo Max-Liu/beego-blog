@@ -33,8 +33,9 @@ func (this *BlogController) Post() {
 		beego.Info(err)
 	} else {
 		c,err :=redis.Dial("tcp", ":6379")
+		defer c.Close()
 		if err!=nil{
-			spew.Dump(err)
+			log.Println(err)
 		}
 		post_count,_ := c.Do("INCR","post:count")
 		blog.Id = post_count.(int64)
@@ -52,6 +53,22 @@ func (this *BlogController) Post() {
 		}
 	}
 }
+
+func (this *BlogController) Artical(){
+	this.TplNames = "blog/index.html"
+	blogId := this.Input().Get("id")
+	c,err := redis.Dial("tcp", ":6379")
+	if err !=nil{
+		log.Println(err)
+	}
+	var blog Blog
+	reply,_ := c.Do("HGETALL", "post:"+blogId)
+	redis.ScanStruct(reply.([]interface{}), &blog)
+
+	this.Data["blog"] = blog
+	this.Render()
+}
+
 func (this *BlogController) Home(){
 	this.Layout = "layout.html"
 	this.TplNames = "home.html"
