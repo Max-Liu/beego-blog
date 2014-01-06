@@ -10,6 +10,13 @@ func main() {
 	beego.SessionSavePath = "127.0.0.1:6379"
 	beego.AutoRouter(&controllers.UserController{})
 	beego.AutoRouter(&controllers.BlogController{})
+	beego.Router("/", &controllers.BlogController{})
+	
+	beego.AddFuncMap("hi",hello)
 	beego.Run()
 }
 
+func hello(in string)(out string){
+    out = in + "world"
+    return
+}
