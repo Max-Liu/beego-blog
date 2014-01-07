@@ -30,6 +30,7 @@ func (this *UserController) Login_api() {
 		}
 		defer c.Close()
 		reply,_:=c.Do("get", "user:password")
+
 		if user.Password == string(reply.([]uint8)) {
 			this.SetSession("login", true)
 			this.Ctx.Redirect(302, "/blog/new")
