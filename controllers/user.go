@@ -3,7 +3,8 @@ package controllers
 import (
 	"github.com/astaxie/beego"
  	// spew "github.com/davecgh/go-spew/spew"
- 	// "github.com/garyburd/redigo/redis"
+ 	"github.com/garyburd/redigo/redis"
+ 	"log"
 )
 
 type UserController struct {
@@ -23,7 +24,13 @@ func (this *UserController) Login_api() {
 	if err := this.ParseForm(&user); err != nil {
 		beego.Info(err)
 	} else {
-		if user.Email == "forevervmax@gmail.com" {
+		c, err := redis.Dial("tcp", ":6379")
+		if err != nil{
+			log.Println(err)
+		}
+		defer c.Close()
+		reply,_:=c.Do("get", "user:password")
+		if user.Password == string(reply.([]uint8)) {
 			this.SetSession("login", true)
 			this.Ctx.Redirect(302, "/blog/new")
 		} else {
