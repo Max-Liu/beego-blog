@@ -27,12 +27,11 @@ var checkDatabase = func (ctx *context.Context){
 func main() {
 	beego.SessionProvider = "redis"
 	beego.SessionSavePath = "127.0.0.1:6379"
-	// beego.InsertFilter("*",1,checkDatabase )
+	beego.InsertFilter("*",0,checkDatabase )
 	beego.AutoRouter(&controllers.UserController{})
 	beego.AutoRouter(&controllers.BlogController{})
 	beego.Router("/", &controllers.BlogController{},"get:Home")
 	beego.Router("/blog/", &controllers.BlogController{},"get:Blog")
-	
 	beego.Run()
 }
 
