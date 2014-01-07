@@ -44,29 +44,23 @@ func (this *BlogController) Get() {
 	this.TplNames = "blog/list.html"
 	this.Data["css"]= `<link href="/static/css/list.css" rel="stylesheet">`
 
-	if this.GetSession("login") == true {
-		c, err := redis.Dial("tcp", ":6379")
-		if err != nil {
-			log.Println(err)
-		}
-		postIndexList, _ := redis.Values(c.Do("LRANGE", "post:list", 0, 10))
+	c, err := redis.Dial("tcp", ":6379")
+	if err != nil {
+		log.Println(err)
+	}
+	postIndexList, _ := redis.Values(c.Do("LRANGE", "post:list", 0, 10))
 
-		var post Blog
-		var postList []Blog
+	var post Blog
+	var postList []Blog
 
-		for _, v := range postIndexList {
-			r, _ := redis.Values(c.Do("HGETALL", "post:"+string(v.([]uint8))))
-			redis.ScanStruct(r, &post)
-			postList = append(postList, post)
-		}
+	for _, v := range postIndexList {
+		r, _ := redis.Values(c.Do("HGETALL", "post:"+string(v.([]uint8))))
+		redis.ScanStruct(r, &post)
+		postList = append(postList, post)
+	}
 
 		this.Data["blogList"] = postList
 		this.Render()
-	} else {
-		flash.Error("need login")
-		flash.Store(&this.Controller)
-		this.Redirect("/user/login", 302)
-	}
 }
 
 func (this *BlogController) Post() {
