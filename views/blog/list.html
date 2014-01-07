@@ -1,0 +1,9 @@
+ <div class="row">
+      {{range $key,$val :=.blogList}} 
+        <div class="blog-list center-block">
+          <h2 class="text-center">{{$val.Title}}</h2>
+            {{$val.Content |str2html}}
+          <p><a class="btn center-block" href="/blog/artical?id={{$val.Id}}" role="button">More</a></p>
+        </div>
+      {{end}}
+</div>

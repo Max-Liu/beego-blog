@@ -25,11 +25,11 @@ func (this *UserController) Login_api() {
 	} else {
 		if user.Email == "forevervmax@gmail.com" {
 			this.SetSession("login", true)
-			this.Ctx.Redirect(302, "/blog/home")
+			this.Ctx.Redirect(302, "/blog/new")
 		} else {
 			flash.Error("error password")
 			flash.Store(&this.Controller)
-			this.Ctx.Redirect(302, "/user/home")
+			this.Ctx.Redirect(302, "/user/login")
 		}
 	}
 }
@@ -37,7 +37,7 @@ func (this *UserController) Login_api() {
 func (this *UserController) Login() {
 	this.TplNames = "login.html"
 	if this.GetSession("login") == true{
-		this.Redirect("/blog/list", 302)
+		this.Redirect("/blog/new", 302)
 	}
 	beego.ReadFromRequest(&this.Controller)
 	this.Render()

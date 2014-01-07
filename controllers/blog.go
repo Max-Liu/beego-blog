@@ -22,6 +22,9 @@ type BlogController struct {
 }
 
 func (this *BlogController) New() {
+	if(this.GetSession("login")!=true){
+		this.Redirect("/", 302)
+	}
 	this.TplNames = "blog/edit.html"
 	this.Layout = "layout/layout.html"
 	this.Data["css"] = `<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-wysihtml5.css"></link>
