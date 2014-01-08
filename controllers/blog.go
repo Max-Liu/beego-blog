@@ -1,18 +1,22 @@
 package controllers
 
 import (
+	"log"
 	"github.com/astaxie/beego"
 	spew "github.com/davecgh/go-spew/spew"
 	"github.com/garyburd/redigo/redis"
-	"log"
+
+	// "log"
+	//
 	"strconv"
+
 	"time"
-	// "fmt"
 )
 
 type Blog struct {
 	Id          int64
 	Title       string `form:"title"`
+	Slug        string `form:"slug"`
 	Content     string `form:"content"`
 	TimeCreated int64
 }
@@ -39,22 +43,29 @@ func (this *BlogController) New() {
 	this.Render()
 }
 
-func (this *BlogController) SetPass() {
+func (this *BlogController) Password() {
 	this.TplNames = "blog/setpass.html"
 	this.Layout = "layout/layout.html"
+	this.Render()
+}
 
+func (this *BlogController) SetPass() {
 	password := this.Input().Get("password")
-
 	if password != "" {
+		log.Println(password)
 		c, err := redis.Dial("tcp", ":6379")
 		if err != nil {
 			log.Println(err)
 		}
 		defer c.Close()
-		c.Do("SET", "user:password", password)
+
+		_, err = c.Do("SET", "user:password", password)
+		if err != nil {
+			log.Println(err)
+		}
 		this.Redirect("/blog/new", 302)
 	}
-	this.Render()
+
 }
 func (this *BlogController) Home() {
 	this.TplNames = "index.html"
@@ -73,6 +84,42 @@ func (this *BlogController) Home() {
 	this.Data["page"] = "home"
 
 	this.Render()
+}
+
+func (this *BlogController) Blogroute() {
+
+	route := this.Ctx.Input.Param(":route")
+
+	switch route {
+	case "home":
+		this.Home()
+	case "new":
+		this.New()
+	case "post":
+		this.Post()
+	case "setpass":
+		this.SetPass()
+	case "password":
+		this.Password()
+	default:
+		this.Layout = "layout/layout.html"
+		this.TplNames = "blog/index.html"
+
+		c, err := redis.Dial("tcp", ":6379")
+		if err != nil {
+			log.Println(err)
+		}
+
+		blogId, _ := redis.String(c.Do("HGET", "slug.to.id", route))
+
+		var blog Blog
+		reply, _ := c.Do("HGETALL", "post:"+blogId)
+		redis.ScanStruct(reply.([]interface{}), &blog)
+
+		this.Data["blog"] = blog
+		this.Render()
+	}
+
 }
 
 func (this *BlogController) Blog() {
@@ -105,38 +152,27 @@ func (this *BlogController) Post() {
 	} else {
 		c, err := redis.Dial("tcp", ":6379")
 		defer c.Close()
+
 		if err != nil {
 			log.Println(err)
 		}
-		post_count, _ := c.Do("INCR", "post:count")
-		blog.Id = post_count.(int64)
-		blog.TimeCreated = time.Now().Unix()
-		spew.Dump(blog)
-		c.Send("LPUSH", "post:list", blog.Id)
-		c.Send("HMSET", redis.Args{}.Add("post:"+strconv.FormatInt(post_count.(int64), 36)).AddFlat(&blog)...)
-		c.Flush()
-		r, _ := c.Receive()
-		spew.Dump(r)
-		if err != nil {
-			spew.Dump(err)
-		} else {
-			this.Redirect("/", 302)
+		slug := this.Input().Get("slug")
+		post_count, _ := redis.Int(c.Do("GET", "post:count"))
+
+		reply, _ := redis.Bool(c.Do("HSETNX", "slug.to.id", slug, post_count+1))
+		if reply == true {
+			post_count, _ := c.Do("INCR", "post:count")
+			blog.Id = post_count.(int64)
+			blog.TimeCreated = time.Now().Unix()
+			c.Send("LPUSH", "post:list", blog.Id)
+			c.Send("HMSET", redis.Args{}.Add("post:"+strconv.FormatInt(post_count.(int64), 36)).AddFlat(&blog)...)
+			c.Flush()
+			if err != nil {
+				spew.Dump(err)
+			} else {
+				this.Redirect("/", 302)
+			}
 		}
-	}
-}
 
-func (this *BlogController) Artical() {
-	this.Layout = "layout/layout.html"
-	this.TplNames = "blog/index.html"
-	blogId := this.Input().Get("id")
-	c, err := redis.Dial("tcp", ":6379")
-	if err != nil {
-		log.Println(err)
 	}
-	var blog Blog
-	reply, _ := c.Do("HGETALL", "post:"+blogId)
-	redis.ScanStruct(reply.([]interface{}), &blog)
-
-	this.Data["blog"] = blog
-	this.Render()
 }
