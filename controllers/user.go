@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
- 	// spew "github.com/davecgh/go-spew/spew"
- 	"github.com/garyburd/redigo/redis"
- 	"log"
+	// spew "github.com/davecgh/go-spew/spew"
+	"log"
+	"github.com/garyburd/redigo/redis"
 )
 
 type UserController struct {
@@ -12,7 +12,6 @@ type UserController struct {
 }
 
 type User struct {
-	// Id  int `form:"-"`
 	Email    string `form:"email"`
 	Password string `form:"password"`
 }
@@ -25,11 +24,11 @@ func (this *UserController) Login_api() {
 		beego.Info(err)
 	} else {
 		c, err := redis.Dial("tcp", ":6379")
-		if err != nil{
+		if err != nil {
 			log.Println(err)
 		}
 		defer c.Close()
-		reply,_:=c.Do("get", "user:password")
+		reply, _ := c.Do("get", "user:password")
 
 		if user.Password == string(reply.([]uint8)) {
 			this.SetSession("login", true)
@@ -44,7 +43,7 @@ func (this *UserController) Login_api() {
 
 func (this *UserController) Login() {
 	this.TplNames = "login.html"
-	if this.GetSession("login") == true{
+	if this.GetSession("login") == true {
 		this.Redirect("/blog/new", 302)
 	}
 	beego.ReadFromRequest(&this.Controller)
@@ -55,5 +54,3 @@ func (this *UserController) Logout() {
 	this.DelSession("login")
 	this.Redirect("/user/home", 302)
 }
-
-

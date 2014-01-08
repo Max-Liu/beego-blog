@@ -2,15 +2,12 @@ package controllers
 
 import (
 	"log"
-	"github.com/astaxie/beego"
-	spew "github.com/davecgh/go-spew/spew"
-	"github.com/garyburd/redigo/redis"
-
-	// "log"
-	//
 	"strconv"
-
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/garyburd/redigo/redis"
 )
 
 type Blog struct {
