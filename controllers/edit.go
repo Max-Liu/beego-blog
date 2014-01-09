@@ -74,7 +74,7 @@ func (this *EditController) Excute() {
 
 		if reply == true {
 			blog.Id = id
-			reply, _ := c.Do("HMSET", redis.Args{}.Add("post:"+strconv.Itoa(int(blog.Id))).AddFlat(&blog)...)
+			c.Do("HMSET", redis.Args{}.Add("post:"+strconv.Itoa(int(blog.Id))).AddFlat(&blog)...)
 			if err != nil {
 				spew.Dump(err)
 			} else {
