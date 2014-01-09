@@ -99,12 +99,15 @@ textarea {
    ========================================================================== */
 
 
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  background-color: #eee;
+}
 
-
-
-
-
-
+.container{
+    max-width:800px
+}
 
 
 

@@ -29,10 +29,8 @@ func (this *BlogController) New() {
 	this.TplNames = "blog/edit.html"
 	this.Layout = "layout/layout.html"
 	this.Data["css"] = `<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-wysihtml5.css"></link>
-    <link href="/static/css/blog.css" rel="stylesheet">`
+    <link href="/static/css/blog_new.css" rel="stylesheet">`
 	this.Data["js"] = `<script src="/static/js/wysihtml5-0.3.0.min.js"></script>
-    <script src="/static/js/jquery-1.7.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/bootstrap-wysihtml5.min.js"></script>
     <script type="text/javascript">
     $('#textarea').wysihtml5();
@@ -67,16 +65,6 @@ func (this *BlogController) SetPass() {
 func (this *BlogController) Home() {
 	this.TplNames = "index.html"
 	this.Layout = "layout/layout.html"
-	this.Data["css"] = `    <link rel="stylesheet" href="/static/css/home/normalize.css">
-    <link rel="stylesheet" href="/static/css/home/main.css">
-    <link rel="stylesheet" href="/static/css/home/bootstrap.css">
-    <script src="/static/js/home/vendor/modernizr-2.7.1.min.js"></script>`
-
-	this.Data["js"] = `<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-	<script src="/static/js/home/plugins.js"></script>
-	<script src="/static/js/home/bootstrap.js"></script>
-	<script src="/static/js/home/main.js"></script>`
 
 	this.Data["page"] = "home"
 
