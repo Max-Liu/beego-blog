@@ -31,6 +31,7 @@ func main() {
 	beego.InsertFilter("*", 1, checkDatabase)
 	beego.AutoRouter(&controllers.UserController{})
 	beego.Router(`/blog/:route([\w-]+)`, &controllers.BlogController{}, "post:Blogroute;get:Blogroute")
+	beego.Router(`/edit/:route([\w-]+)`, &controllers.EditController{}, "post:Editroute;get:Editroute")
 	beego.Router("/", &controllers.BlogController{}, "get:Home")
 	beego.Router("/blog/", &controllers.BlogController{}, "get:Blog")
 	beego.Run()

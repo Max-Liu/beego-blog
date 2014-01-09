@@ -1,9 +1,13 @@
-<form class="form-blog" role="form" action="/blog/post" method="post">
+<form class="form-blog" role="form" action="/edit/excute" method="post">
   <h2 class="form-signin-heading text-center">New Blog</h2>
   <div>
-    <input type="text" class="form-control form-title center-block" name="title" placeholder="Title">
-    <input type="text" class="form-control form-title center-block" name="slug" placeholder="Slug">
+    <input type="text" class="form-control form-title center-block" name="title" placeholder="Title" value="{{.blog.Title}}">
+    <input type="text" class="form-control form-title center-block" name="slug" placeholder="Slug" value="{{.blog.Slug}}">
   </div>
-  <textarea id="textarea"class="form-control" rows="20" placeholder="Content" name="content"></textarea>
+  <textarea id="textarea"class="form-control" rows="20" placeholder="Content" name="content">
+  	{{if .blog.Content}}
+  	{{.blog.Content}}
+  	{{end}}
+  </textarea>
   <button class="btn btn-lg btn-primary center-block" type="submit">Post</button>
 </form>
