@@ -6,7 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This Sample Blog is build by Golang and Redis.">
         <meta name="author" content="Max Lau">
-        <title>Max On the Way</title>
+        <title>Max On the Way
+        {{if .blog}}
+        | {{.blog.Title}}
+        {{end}}
+
+        </title>
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"></link>
         <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
         <link rel="stylesheet" type="text/css" href="/static/css/main.css">

@@ -1,4 +1,11 @@
-<form class="form-blog" role="form" action="/edit/excute" method="post">
+{{with $url := substr .url 1 4}}
+{{if compare  $url "edit"}}
+  <form class="form-blog" role="form" action="/edit/excute" method="post">
+{{else}}
+  <form class="form-blog" role="form" action="/blog/post" method="post">
+{{end}}
+{{end}}
+
   <h2 class="form-signin-heading text-center">New Blog</h2>
   <div>
     <input type="text" class="form-control form-title center-block" name="title" placeholder="Title" value="{{.blog.Title}}">

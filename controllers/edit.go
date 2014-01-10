@@ -52,6 +52,7 @@ func (this *EditController) Editroute() {
 		redis.ScanStruct(reply.([]interface{}), &blog)
 
 		this.Data["blog"] = blog
+		this.Data["url"] = this.Ctx.Input.Url()
 		this.Render()
 	}
 

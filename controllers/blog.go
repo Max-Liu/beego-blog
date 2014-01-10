@@ -35,6 +35,7 @@ func (this *BlogController) New() {
     <script type="text/javascript">
     $('#textarea').wysihtml5();
     </script>`
+	this.Data["url"] = this.Ctx.Input.Url()
 	this.Render()
 }
 
@@ -125,7 +126,6 @@ func (this *BlogController) Blog() {
 		redis.ScanStruct(r, &post)
 		postList = append(postList, post)
 	}
-
 	this.Data["blogList"] = postList
 	this.Render()
 }
