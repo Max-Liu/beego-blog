@@ -51,7 +51,7 @@ func (this *BlogController) SetPass() {
 		log.Println(password)
 		c, err := redis.Dial("tcp", ":6379")
 		if err != nil {
-			log.Println(err)
+			this.Redirect("/err", 302)
 		}
 		defer c.Close()
 
@@ -72,6 +72,13 @@ func (this *BlogController) Home() {
 	this.Render()
 }
 
+func (this *BlogController) Errdb() {
+	this.TplNames = "err.html"
+	this.Layout = "layout/layout.html"
+	this.Data["page"] = "err"
+	this.Render()
+
+}
 func (this *BlogController) Blogroute() {
 
 	route := this.Ctx.Input.Param(":route")
@@ -158,6 +165,5 @@ func (this *BlogController) Post() {
 				this.Redirect("/", 302)
 			}
 		}
-
 	}
 }
