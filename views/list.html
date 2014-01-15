@@ -3,6 +3,7 @@
         <div class="blog-list center-block">
           <h2 class="text-center">{{$val.Title}}</h2>
             {{$val.Content |str2html}}
+            <a href="/blog">back</a>
           <p><a class="btn center-block" href="/blog/artical?id={{$val.Id}}" role="button">More</a></p>
         </div>
       {{end}}

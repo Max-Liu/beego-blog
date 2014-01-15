@@ -109,7 +109,22 @@ body {
     max-width:800px
 }
 
+@media (max-width: 500px) {
+  h1 {
+    font-size: 36px;
+    padding: 5px;
+  }
+  li {
+    padding: 5px;
+    display: block;
+  }
+}
 
+article {
+  max-width: 800px;
+  padding: 20px;
+  margin: 0 auto;
+}
 
 
 
