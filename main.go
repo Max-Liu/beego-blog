@@ -2,6 +2,7 @@ package main
 
 import (
 	"blog/controllers"
+	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -39,5 +40,11 @@ func main() {
 	beego.Router("/err/db", &controllers.BlogController{}, "get:Errdb")
 	beego.Router("/blog/", &controllers.BlogController{}, "get:Blog")
 
+	beego.AddFuncMap("time", getTimeByUnix)
 	beego.Run()
+}
+
+func getTimeByUnix(Unix int64) (timeFormat string) {
+	timeStrct := time.Unix(Unix, 0)
+	return timeStrct.Format("Mon Jan 2 15:04:05 MST 2006")
 }

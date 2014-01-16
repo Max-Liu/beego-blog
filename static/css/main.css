@@ -126,6 +126,12 @@ article {
   margin: 0 auto;
 }
 
+time {
+  color: #999;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
 
 
 

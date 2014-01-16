@@ -1,7 +1,8 @@
-<article>
-	<div class="row center-block">
-	    <h2 class="form-signin-heading text-center">{{.blog.Title}}</h2>
+	<div class="row">
+	    <h2 class="text-center">{{.blog.Title}}</h2>
+	    <time> {{.blog.TimeCreated|time}}</time>
+	    <article>
 	    {{.blog.Content|str2html}}
+	    </article>
 	</div>
 	<a href="/blog">back</a>
-</article>

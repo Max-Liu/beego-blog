@@ -1,7 +1,8 @@
  <div class="row">
       {{range $key,$val :=.blogList}} 
-      <article>
           <h2 class="text-center">{{$val.Title}}</h2>
+          <time> {{$val.TimeCreated|time}}</time>
+      <article>
             {{$val.Content |str2html}}
           <p><a class="btn center-block" href="/blog/{{$val.Slug}}" role="button">More</a></p>
       </article>
