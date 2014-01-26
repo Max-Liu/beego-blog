@@ -6,7 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This Sample Blog is build by Golang and Redis.">
         <meta name="author" content="Max Lau">
+        <link href='/static/css/nprogress.css' rel='stylesheet' />
         <title>Max On the Way{{if .blog}}|{{.blog.Title}}{{end}}</title>
+        <script src="/static/js/jquery-2.1.0.min.js"></script>
+        <script src="/static/js/nprogress.js"></script>
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"></link>
         <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
         <link rel="stylesheet" type="text/css" href="/static/css/main.css">
@@ -44,8 +47,10 @@
         </p></div>
     </footer>
     </div>
-    <script src="/static/js/jquery-1.7.1.min.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
+    <script type="text/javascript">
+    NProgress.start();
+    </script>
+    <script src="/static/js/bootstrap.min.js"></script>
     {{if .js}}
     {{.js|str2html}}
     {{end}}
@@ -64,6 +69,7 @@
 
         ga('create', 'UA-39976469-1', 'iseemax.com');
         ga('send', 'pageview');
+        NProgress.done();
     </script>
   </body>
 </html>
