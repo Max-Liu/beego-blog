@@ -39,6 +39,7 @@ func main() {
 	beego.Router("/", &controllers.BlogController{}, "get:Home")
 	beego.Router("/err/db", &controllers.BlogController{}, "get:Errdb")
 	beego.Router("/blog/", &controllers.BlogController{}, "get:Blog")
+	beego.SetStaticPath("/", "")
 
 	beego.AddFuncMap("time", getTimeByUnix)
 	beego.Run()
