@@ -33,13 +33,12 @@ func main() {
 	beego.InsertFilter("*", 1, checkDatabase)
 
 	beego.AutoRouter(&controllers.UserController{})
-
+	beego.SetStaticPath("robots.txt", "robots.txt")
 	beego.Router(`/blog/:route([\w-]+)`, &controllers.BlogController{}, "post:Blogroute;get:Blogroute")
 	beego.Router(`/edit/:route([\w-]+)`, &controllers.EditController{}, "post:Editroute;get:Editroute")
 	beego.Router("/", &controllers.BlogController{}, "get:Home")
 	beego.Router("/err/db", &controllers.BlogController{}, "get:Errdb")
 	beego.Router("/blog/", &controllers.BlogController{}, "get:Blog")
-	beego.SetStaticPath("/", "")
 
 	beego.AddFuncMap("time", getTimeByUnix)
 	beego.Run()
